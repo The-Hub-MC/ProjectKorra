@@ -189,16 +189,16 @@ public abstract class WaterAbility extends ElementalAbility {
 		Vector vector = location.getDirection().clone().normalize();
 		
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
-		Block testBlock = player.getTargetBlock(getTransparentMaterialSet(), (int) range);
 		if (bPlayer == null) {
 			return null;
-		} else if (isWaterbendable(testBlock.getType())) {
-			return testBlock;
 		}
 		
 		for (double i = 0; i <= range; i++) {
 			Block block = location.clone().add(vector.clone().multiply(i)).getBlock();
-			if (!isTransparent(player, block) || GeneralMethods.isRegionProtectedFromBuild(player, "WaterManipulation", location)) {
+			if (!isTransparent(player, block)) {
+				return null;
+			}
+			if (GeneralMethods.isRegionProtectedFromBuild(player, "WaterManipulation", location)) {
 				continue;
 			} else if (isWaterbendable(player, null, block) && (!isPlant(block) || plantbending)) {
 				if (TempBlock.isTempBlock(block)) {

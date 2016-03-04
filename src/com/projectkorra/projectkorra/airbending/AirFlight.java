@@ -65,6 +65,9 @@ public class AirFlight extends FlightAbility {
 		String playername = player.getName();
 
 		if (bool) {
+			if (player.getInventory().contains(Material.ELYTRA)) {
+				return;
+			}
 			if (!HOVERING.containsKey(playername)) {
 				HOVERING.put(playername, true);
 				player.setVelocity(new Vector(0, 0, 0));
