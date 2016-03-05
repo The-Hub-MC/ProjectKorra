@@ -1,21 +1,19 @@
 package com.projectkorra.projectkorra.util;
 
+import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
+
+import com.projectkorra.projectkorra.ability.Ability;
+import com.projectkorra.projectkorra.command.Commands;
+import com.projectkorra.projectkorra.event.AbilityDamageEntityEvent;
+import com.projectkorra.projectkorra.event.EntityBendingDeathEvent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-
-import com.projectkorra.projectkorra.Element;
-import com.projectkorra.projectkorra.ability.Ability;
-import com.projectkorra.projectkorra.ability.CoreAbility;
-import com.projectkorra.projectkorra.command.Commands;
-import com.projectkorra.projectkorra.event.AbilityDamageEntityEvent;
-import com.projectkorra.projectkorra.event.EntityBendingDeathEvent;
-
-import fr.neatmonster.nocheatplus.checks.CheckType;
-import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 
 public class DamageHandler {
 
@@ -27,6 +25,7 @@ public class DamageHandler {
 	 * @param entity The entity that is receiving the damage
 	 * @param damage The amount of damage to deal
 	 */
+	@SuppressWarnings("deprecation")
 	public static void damageEntity(Entity entity, Player source, double damage, Ability ability) {
 		
 		if (ability == null)
@@ -41,7 +40,7 @@ public class DamageHandler {
 			}
 			if (!damageEvent.isCancelled()) {
 				damage = damageEvent.getDamage();
-				if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus")) {
+				if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus") && player != null) {
 					NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT_REACH);
 				}
 
@@ -55,7 +54,7 @@ public class DamageHandler {
 					Bukkit.getServer().getPluginManager().callEvent(event);
 				}
 				
-				if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus")) {
+				if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus") && player != null) {
 					NCPExemptionManager.unexempt(player);
 				}
 			}
