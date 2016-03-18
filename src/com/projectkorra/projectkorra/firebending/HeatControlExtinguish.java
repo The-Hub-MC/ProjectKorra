@@ -8,6 +8,7 @@ import com.projectkorra.projectkorra.ability.FireAbility;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -47,7 +48,7 @@ public class HeatControlExtinguish extends FireAbility {
 				continue;
 			} else if (block.getType() == Material.FIRE) {
 				block.setType(Material.AIR);
-				block.getWorld().playEffect(block.getLocation(), Effect.EXTINGUISH, 0);
+				block.getWorld().playSound(block.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1f, 1f);
 			}
 		}
 

@@ -110,6 +110,7 @@ public class LavaFlow extends LavaAbility {
 		this.downwardFlow = getConfig().getInt("Abilities.Earth.LavaFlow.DownwardFlow");
 		this.allowNaturalFlow = getConfig().getBoolean("Abilities.Earth.LavaFlow.AllowNaturalFlow");
 
+		/*
 		if (bPlayer.isAvatarState()) {
 			shiftCooldown = 0;
 			clickLavaCooldown = 0;
@@ -128,6 +129,7 @@ public class LavaFlow extends LavaAbility {
 			upwardFlow = AvatarState.getValue(upwardFlow);
 			downwardFlow = AvatarState.getValue(downwardFlow);
 		}
+		*/
 
 		if (type == AbilityType.SHIFT) {
 			// Update the shift counter for all the player's LavaFlows
