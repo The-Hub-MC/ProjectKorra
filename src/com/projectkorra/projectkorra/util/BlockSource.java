@@ -29,7 +29,7 @@ public class BlockSource {
 	 * @author kingbirdy
 	 */
 	public static enum BlockSourceType {
-		WATER, ICE, PLANT, EARTH, METAL, LAVA
+		WATER, ICE, PLANT, EARTH, METAL, LAVA, SNOW
 	}
 
 	private static HashMap<Player, HashMap<BlockSourceType, HashMap<ClickType, BlockSourceInformation>>> playerSources = new HashMap<Player, HashMap<BlockSourceType, HashMap<ClickType, BlockSourceInformation>>>();
@@ -64,6 +64,9 @@ public class BlockSource {
 				}
 				if (WaterAbility.isIce(waterBlock)) {
 					putSource(player, waterBlock, BlockSourceType.ICE, clickType);
+				}
+				if (WaterAbility.isSnow(waterBlock)) {
+					putSource(player, waterBlock, BlockSourceType.SNOW, clickType);
 				}
 			}
 		} else if (coreAbil instanceof EarthAbility) {
@@ -115,6 +118,7 @@ public class BlockSource {
 	 * @return a valid bendable block, or null if none was found.
 	 */
 	public static BlockSourceInformation getBlockSourceInformation(Player player, BlockSourceType sourceType, ClickType clickType) {
+		
 		if (!playerSources.containsKey(player)) {
 			return null;
 		} else if (!playerSources.get(player).containsKey(sourceType)) {
@@ -152,6 +156,9 @@ public class BlockSource {
 	 */
 	public static Block getSourceBlock(Player player, double range, BlockSourceType sourceType, ClickType clickType) {
 		BlockSourceInformation info = getValidBlockSourceInformation(player, range, sourceType, clickType);
+		if (TempBlock.isTempBlock(info.getBlock())) {
+			return null;
+		}
 		return info != null ? info.getBlock() : null;
 	}
 
@@ -210,7 +217,7 @@ public class BlockSource {
 	 * @return a valid Water bendable block, or null if none was found.
 	 */
 	public static Block getWaterSourceBlock(Player player, double range, ClickType clickType, boolean allowWater, boolean allowIce, boolean allowPlant) {
-		return getWaterSourceBlock(player, range, clickType, allowWater, allowIce, allowPlant, true);
+		return getWaterSourceBlock(player, range, clickType, allowWater, allowIce, allowPlant, true, true);
 	}
 
 	/**
@@ -228,7 +235,7 @@ public class BlockSource {
 	 *            that may have been created by a WaterBottle.
 	 * @return a valid Water bendable block, or null if none was found.
 	 */
-	public static Block getWaterSourceBlock(Player player, double range, ClickType clickType, boolean allowWater, boolean allowIce, boolean allowPlant, boolean allowWaterBottles) {
+	public static Block getWaterSourceBlock(Player player, double range, ClickType clickType, boolean allowWater, boolean allowIce, boolean allowPlant, boolean allowSnow, boolean allowWaterBottles) {
 		Block sourceBlock = null;
 		if (allowWaterBottles) {
 			// Check the block in front of the player's eyes, it may have been created by a
@@ -246,6 +253,9 @@ public class BlockSource {
 		}
 		if (allowPlant && sourceBlock == null) {
 			sourceBlock = getSourceBlock(player, range, BlockSourceType.PLANT, clickType);
+		}
+		if (allowSnow && sourceBlock == null) {
+			sourceBlock = getSourceBlock(player, range, BlockSourceType.SNOW, clickType);
 		}
 		if(sourceBlock != null && TempBlock.isTempBlock(sourceBlock) && !tempblock) {
 			return null;
@@ -282,6 +292,7 @@ public class BlockSource {
 	 */
 	public static Block getEarthSourceBlock(Player player, double range, ClickType clickType, boolean allowNearbySubstitute) {
 		Block sourceBlock = getSourceBlock(player, range, BlockSourceType.EARTH, clickType);
+		
 		if (sourceBlock == null && allowNearbySubstitute) {
 			BlockSourceInformation blockInfo = getBlockSourceInformation(player, BlockSourceType.EARTH, clickType);
 

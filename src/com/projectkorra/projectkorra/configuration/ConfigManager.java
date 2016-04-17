@@ -126,6 +126,9 @@ public class ConfigManager {
 			iceBlocks.add("ICE");
 			iceBlocks.add("PACKED_ICE");
 			
+			ArrayList<String> snowBlocks = new ArrayList<>();
+			snowBlocks.add("SNOW");
+			
 			ArrayList<String> plantBlocks = new ArrayList<String>();
 			plantBlocks.add("SAPLING");
 			plantBlocks.add("LEAVES");
@@ -199,6 +202,7 @@ public class ConfigManager {
 			config.addDefault("Properties.Water.CanBendWithWeapons", true);
 			config.addDefault("Properties.Water.IceBlocks", iceBlocks);
 			config.addDefault("Properties.Water.PlantBlocks", plantBlocks);
+			config.addDefault("Properties.Water.SnowBlocks", snowBlocks);
 			config.addDefault("Properties.Water.NightFactor", 1.5);
 			config.addDefault("Properties.Water.FullMoonFactor", 2.0);
 			config.addDefault("Properties.Water.PlaySound", true);
