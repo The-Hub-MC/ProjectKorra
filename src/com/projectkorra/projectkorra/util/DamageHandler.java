@@ -44,15 +44,13 @@ public class DamageHandler {
 					NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT_REACH);
 				}
 
-				boolean wasDead = entity.isDead();
-				
-				((LivingEntity) entity).damage(damage, source);
-				entity.setLastDamageCause(new EntityDamageByEntityEvent(player, entity, DamageCause.CUSTOM, damage));
-				
-				if(!wasDead && entity.isDead()) {
+				if (((LivingEntity) entity).getHealth() - damage <= 0 && !entity.isDead()) {
 					EntityBendingDeathEvent event = new EntityBendingDeathEvent(entity, damage, ability);
 					Bukkit.getServer().getPluginManager().callEvent(event);
 				}
+				
+				((LivingEntity) entity).damage(damage, source);
+				entity.setLastDamageCause(new EntityDamageByEntityEvent(player, entity, DamageCause.CUSTOM, damage));
 				
 				if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus") && player != null) {
 					NCPExemptionManager.unexempt(player);
