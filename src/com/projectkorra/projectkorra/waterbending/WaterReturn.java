@@ -10,6 +10,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -137,12 +139,17 @@ public class WaterReturn extends WaterAbility {
 			return false;
 		}
 		PlayerInventory inventory = player.getInventory();
-		return (inventory.contains(new ItemStack(Material.POTION), 1));
+		if (inventory.contains(Material.POTION)) {
+			ItemStack item = inventory.getItem(inventory.first(Material.POTION));
+			PotionMeta meta = (PotionMeta) item.getItemMeta();
+			return meta.getBasePotionData().getType().equals(PotionType.WATER);
+		}
+		return false;
 	}
 
 	public static void emptyWaterBottle(Player player) {
 		PlayerInventory inventory = player.getInventory();
-		int index = inventory.first(new ItemStack(Material.POTION));
+		int index = inventory.first(Material.POTION);
 		
 		if (index != -1) {
 			ItemStack item = inventory.getItem(index);
